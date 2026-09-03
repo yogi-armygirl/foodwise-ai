@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FoodWise AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">🍱</div>
+
+            <div>
+                <h2>FoodWise</h2>
+                <span>AI Forecasting</span>
+            </div>
+        </div>
+
+        <nav>
+
+            <button class="nav-item active" data-section="dashboard">
+                <span>📊</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item" data-section="add-sales">
+                <span>➕</span>
+                Add Sales
+            </button>
+
+            <button class="nav-item" data-section="prediction">
+                <span>🤖</span>
+                Prediction
+            </button>
+
+            <button class="nav-item" data-section="history">
+                <span>📋</span>
+                Sales History
+            </button>
+
+            <button class="nav-item" data-section="food-management">
+                <span>🍱</span>
+                Food Management
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="ai-status">
+                <span class="status-dot"></span>
+                AI Model Active
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main">
+
+        <!-- ================= TOPBAR ================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1 id="page-title">
+                    Dashboard
+                </h1>
+
+                <p id="page-subtitle">
+                    Monitor food demand and preparation recommendations.
+                </p>
+
+            </div>
+
+            <div class="date-box">
+
+                📅
+
+                <span id="current-date"></span>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboard" class="page-section active-section">
+
+            <!-- STAT CARDS -->
+
+            <div class="stats-grid">
+
+                <!-- TODAY SALES -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        🍽️
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Today's Sales
+                        </p>
+
+                        <h2 id="today-sales">
+                            0
+                        </h2>
+
+                        <span class="positive">
+                            Live from sales data
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOMORROW DEMAND -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        🤖
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Tomorrow's Demand
+                        </p>
+
+                        <h2 id="tomorrow-demand">
+                            0
+                        </h2>
+
+                        <span class="positive">
+                            AI Forecast
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RECOMMENDED PREPARATION -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon orange">
+                        🍱
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Recommended Preparation
+                        </p>
+
+                        <h2 id="recommended-total">
+                            0
+                        </h2>
+
+                        <span>
+                            Including safety buffer
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CURRENT WASTE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+                        ♻️
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Current Waste
+                        </p>
+
+                        <h2 id="waste-percentage">
+                            0%
+                        </h2>
+
+                        <span class="positive">
+                            Based on recorded sales
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PREDICTION + QUICK ACTION -->
+
+            <div class="dashboard-grid">
+
+                <!-- AI FORECAST -->
+
+                <div class="panel prediction-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Tomorrow's Food Forecast
+                            </h2>
+
+                            <p>
+                                AI-powered preparation recommendations
+                            </p>
+
+                        </div>
+
+                        <span class="ai-badge">
+                            ✨ AI Prediction
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="prediction-cards"
+                        class="prediction-cards"
+                    >
+
+                        <!-- JavaScript inserts prediction cards -->
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTION -->
+
+                <div class="panel quick-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                Quick Action
+                            </h2>
+
+                            <p>
+                                Record today's sales
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="primary-button full-width"
+                        onclick="showSection('add-sales')"
+                    >
+                        + Add Today's Sales
+                    </button>
+
+
+                    <button
+                        class="secondary-button full-width"
+                        onclick="showSection('prediction')"
+                    >
+                        🤖 View Full Prediction
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SALES CHART -->
+
+            <div class="panel chart-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Sales Trend
+                        </h2>
+
+                        <p>
+                            Food demand over the last 7 days
+                        </p>
+
+                    </div>
+
+
+                    <select id="food-filter">
+
+                        <option value="all">
+                            All Food
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="chart-container">
+
+                    <canvas id="salesChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= ADD SALES ================= -->
+
+        <section id="add-sales" class="page-section">
+
+            <div class="section-heading">
+
+                <h2>
+                    Record Food Sales
+                </h2>
+
+                <p>
+                    Add today's preparation and sales data.
+                    The AI will use this historical data for future predictions.
+                </p>
+
+            </div>
+
+
+            <div class="form-panel">
+
+                <form id="sales-form">
+
+                    <div class="form-grid">
+
+                        <!-- FOOD ITEM -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Food Item
+                            </label>
+
+                            <select
+                                id="food-item"
+                                required
+                            >
+
+                                <option value="">
+                                    Select food
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Date
+                            </label>
+
+                            <input
+                                type="date"
+                                id="sales-date"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- PREPARED -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Food Prepared
+                            </label>
+
+                            <div class="input-with-unit">
+
+                                <input
+                                    type="number"
+                                    id="prepared"
+                                    min="1"
+                                    placeholder="150"
+                                    required
+                                >
+
+                                <span>
+                                    portions
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SOLD -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Food Sold
+                            </label>
+
+                            <div class="input-with-unit">
+
+                                <input
+                                    type="number"
+                                    id="sold"
+                                    min="0"
+                                    placeholder="138"
+                                    required
+                                >
+
+                                <span>
+                                    portions
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Clear
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Save Sales Data
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div class="info-icon">
+                    💡
+                </div>
+
+                <div>
+
+                    <h3>
+                        Why this data matters
+                    </h3>
+
+                    <p>
+                        Your historical sales data helps the AI understand
+                        demand patterns and make better preparation
+                        recommendations.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PREDICTION ================= -->
+
+        <section id="prediction" class="page-section">
+
+            <div class="section-heading">
+
+                <h2>
+                    AI Demand Prediction
+                </h2>
+
+                <p>
+                    Forecast tomorrow's food demand using historical sales.
+                </p>
+
+            </div>
+
+
+            <div class="prediction-banner">
+
+                <div class="robot">
+                    🤖
+                </div>
+
+                <div>
+
+                    <span>
+                        AI FORECAST
+                    </span>
+
+                    <h2>
+                        Tomorrow's Expected Demand
+                    </h2>
+
+                    <p>
+                        Based on previous sales patterns and historical demand.
+                    </p>
+
+                </div>
+
+
+                <div class="big-number">
+
+                    <strong id="prediction-total">
+                        0
+                    </strong>
+
+                    <span>
+                        portions
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="prediction-table-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Food-wise Recommendation
+                        </h2>
+
+                        <p>
+                            How much should you prepare?
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Food
+                                </th>
+
+                                <th>
+                                    Recent Average
+                                </th>
+
+                                <th>
+                                    AI Demand
+                                </th>
+
+                                <th>
+                                    Safety Buffer
+                                </th>
+
+                                <th>
+                                    Recommended Preparation
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="prediction-table">
+
+                            <!-- JavaScript -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= HISTORY ================= -->
+
+        <section id="history" class="page-section">
+
+            <div class="section-heading">
+
+                <h2>
+                    Sales History
+                </h2>
+
+                <p>
+                    View previously recorded food sales.
+                </p>
+
+            </div>
+
+
+            <div class="history-panel">
+
+                <div class="history-header">
+
+                    <h2>
+                        Historical Sales
+                    </h2>
+
+                    <span id="record-count">
+                        0 records
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Food
+                                </th>
+
+                                <th>
+                                    Prepared
+                                </th>
+
+                                <th>
+                                    Sold
+                                </th>
+
+                                <th>
+                                    Waste
+                                </th>
+
+                                <th>
+                                    Waste %
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="history-table">
+
+                            <!-- JavaScript -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= FOOD MANAGEMENT ================= -->
+
+        <section
+            id="food-management"
+            class="page-section"
+        >
+
+            <div class="section-heading">
+
+                <h2>
+                    Food Management
+                </h2>
+
+                <p>
+                    Manage the food items available in the system.
+                    New foods will become available when recording sales.
+                </p>
+
+            </div>
+
+
+            <!-- ADD FOOD -->
+
+            <div class="form-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <h2>
+                            Add New Food
+                        </h2>
+
+                        <p>
+                            Add a food item to your restaurant or canteen menu.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="food-form">
+
+                    <div class="form-grid">
+
+                        <!-- FOOD NAME -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Food Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="new-food-name"
+                                placeholder="Example: Biryani"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMOJI -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Food Icon
+                            </label>
+
+                            <input
+                                type="text"
+                                id="new-food-emoji"
+                                placeholder="🍛"
+                                value="🍱"
+                                maxlength="4"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-actions">
+
+                        <button
+                            type="reset"
+                            class="secondary-button"
+                        >
+                            Clear
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            + Add Food
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- FOOD LIST -->
+
+            <div class="history-panel">
+
+                <div class="history-header">
+
+                    <div>
+
+                        <h2>
+                            Food List
+                        </h2>
+
+                        <p>
+                            Foods currently available for sales recording.
+                        </p>
+
+                    </div>
+
+                    <span id="food-count">
+                        0 foods
+                    </span>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Icon
+                                </th>
+
+                                <th>
+                                    Food Name
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="food-list">
+
+                            <!-- JavaScript will insert foods -->
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= TOAST ================= -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+        Sales data saved successfully!
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
