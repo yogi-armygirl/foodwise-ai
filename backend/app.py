@@ -3,11 +3,15 @@ from flask_cors import CORS
 import sqlite3
 
 from model import train_and_predict
+from database import create_database
 
 
 app = Flask(__name__)
 
 CORS(app)
+
+# Create database tables when the server starts
+create_database()
 
 
 def get_database():
